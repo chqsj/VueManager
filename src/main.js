@@ -1,6 +1,9 @@
 import Vue from "vue";
 import App from "./App.vue";
 
+// 导入公共样式
+import './assets/base.css'
+
 Vue.config.productionTip = false;
 
 // 导入路由组件

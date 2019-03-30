@@ -14,5 +14,8 @@ export default {
 </script>
 
 <style>
-
+  /* 设置app盒子的样式 */
+  #app{
+    height: 100%;
+  }
 </style>

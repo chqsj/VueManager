@@ -1,0 +1,6 @@
+/* 公共样式   在main.js中导入*/
+
+html,body{
+    height: 100%;
+    margin: 0
+}
