@@ -1,8 +1,8 @@
 <template>
   <div class="login">
     <div class="box">
-      <!-- 动态为登录表单绑定 model 和reles属性 -->
-      <el-form label-position="top" label-width="80px" :model="loginForm" :rules='rules'>
+      <!-- 动态为登录表单绑定 model 和reles属性 使用ref绑定loginForm-->
+      <el-form label-position="top" label-width="80px" ref="loginForm" :model="loginForm" :rules='rules'>
         <h2>用户登录</h2>
         <!-- 使用prop关联username -->
         <el-form-item label="用户名" prop='username'>
@@ -13,7 +13,9 @@
           <el-input v-model="loginForm.password"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button class="my-btn" type="primary">登录</el-button>
+          <!-- 为按钮注册提交和重置事件 -->
+          <el-button class="my-btn" type="primary" @click="submit('loginForm')">登录</el-button>
+          <el-button class="my-btn" type="success"  @click="reset('loginForm')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -42,7 +44,26 @@ export default {
         ]
       }
     };
-  }
+  },
+  methods: {
+    // 表单提交功能
+    submit(formName){
+      this.$refs[formName].validate(valid=>{
+        if(valid){
+          // 登录成功
+        }else{
+            // 登录失败
+            this.$message.error("登录失败")
+            return false;
+        }
+      })
+    },
+    // 表单重置功能
+    reset(formName){
+      this.$message.success("重置成功")
+      this.$refs[formName].resetFields();
+    },
+  },
 };
 </script>
 
@@ -62,7 +83,7 @@ export default {
     padding: 40px;
     box-sizing: border-box;
     .my-btn {
-      width: 100%;
+      width: 100px;
     }
   }
 }
