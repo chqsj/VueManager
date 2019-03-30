@@ -8,6 +8,8 @@ Vue.use(VueRouter);
 import login from "./components/login.vue";
 import index from "./components/index.vue";
 
+
+
 // 路由规则
 let routes = [
   // 登录页
