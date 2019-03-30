@@ -1,11 +1,10 @@
 <template>
-  <div id="app">
+  <div class="app">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-
 
 export default {
   name: 'app',
@@ -15,7 +14,7 @@ export default {
 
 <style>
   /* 设置app盒子的样式 */
-  #app{
+  .app{
     height: 100%;
   }
 </style>
