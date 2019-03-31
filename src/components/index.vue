@@ -96,6 +96,7 @@
 <script>
 export default {
   name: "index",
+  
   methods: {
     logout(){
       // 登出方法  跳转到登录页
@@ -113,7 +114,8 @@ export default {
       this.$message.error('请先登录')
       this.$router.push('/login')
     }
-  }
+  },
+ 
 };
 </script>
 
