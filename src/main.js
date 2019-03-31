@@ -7,10 +7,10 @@ import './assets/base.css'
 Vue.config.productionTip = false;
 
 // 统一设置axios
-// import axios from 'axios'
-// Vue.prototype.$axios = axios
+import axios from 'axios'
 // // 设置基地址
-// axios.defaults.baseURL = 'http://111.230.232.110:8899'
+axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
+Vue.prototype.$axios = axios
 
 // 导入路由组件
 import router from "./router.js";

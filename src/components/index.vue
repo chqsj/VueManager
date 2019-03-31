@@ -11,7 +11,7 @@
           <h1>黑马后台管理系统</h1>
         </el-col>
         <el-col :span="1">
-          <el-button type="success">退出</el-button>
+          <el-button type="success" @click="logout">退出</el-button>
         </el-col>
       </el-row>
     </el-header>
@@ -95,7 +95,25 @@
 
 <script>
 export default {
-  name: "index"
+  name: "index",
+  methods: {
+    logout(){
+      // 登出方法  跳转到登录页
+      // 清除缓存
+      window.sessionStorage.removeItem('token')
+      this.$router.push('/login')
+    }
+  },
+  // 判断用户登录状态 不需要获取组件中的数据 在最开始判断缓存中是否有数据
+  beforeCreate(){
+    if(window.sessionStorage.getItem('token')){
+        // 存在  登录过
+    }else{
+      // 没有登录过
+      this.$message.error('请先登录')
+      this.$router.push('/login')
+    }
+  }
 };
 </script>
 
