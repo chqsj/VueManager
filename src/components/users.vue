@@ -88,6 +88,25 @@
         <el-button type="primary" @click="submitAdd('addForm')">确 定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 编辑用户表单  不需要进行表单验证 -->
+    <el-dialog title="编辑用户" :visible.sync="editFormVisible">
+      <el-form :model="editForm" :rules="addRules" ref="editForm">
+        <el-form-item label="用户名" prop="username" label-width="100px">
+          <el-input v-model="editForm.username" disabled="" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" label-width="100px">
+          <el-input v-model="editForm.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" label-width="100px">
+          <el-input v-model="editForm.mobile" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitEdit('editForm')">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -114,6 +133,14 @@ export default {
         email: "",
         mobile: ""
       },
+      // 编辑用户表单数据
+      editForm: {
+        username: "小东东",
+        email: "45456456465@qq.com",
+        mobile: "32115645645"
+      },
+      // 是否显示编辑表单对话框
+      editFormVisible:false,
       // 新增表单验证
       addRules: {
         username: [
@@ -139,12 +166,20 @@ export default {
   },
   methods: {
     // 编辑按钮的方法
-    handleEdit(index, row) {
-      console.log(index);
-      console.log(row);
+   async handleEdit(index, row) {
+      // 点击编辑按钮根据id发送请求获取数据 显示在编辑框 并且显示编辑表单对话框
+      
+      // console.log(index);
+      // console.log(row);
+      let res = await this.$axios.get(`users/${row.id}`)
+      // console.log(res);
+      // 将根据id查询到的用户信息渲染到编辑表单中
+      this.editForm =res.data.data
+      if(res.data.meta.status ===200){
+         this.editFormVisible = true;
+      }
     },
-    // 添加用户的方法
-    addUser() {},
+  
 
     // 查询用户列表的方法
     async queryUserList() {
@@ -191,6 +226,21 @@ export default {
           return false;
         }
       });
+    },
+    //编辑用户
+   async submitEdit(formName){
+      //  编辑用户可以不用进行表单验证,直接发送请求 保存数据
+      // 这里之所以可以使用editForm.id  因为在点击编辑按钮的时候 我们把用户数据整个传给了editForm 包含id
+        let res = await this.$axios.put(`users/${this.editForm.id}`,{
+          email:this.editForm.email,
+          mobile:this.editForm.mobile,
+        })
+        // 判断返回的响应码  如果是200  表示编辑成功 调用查询方法 并且关闭编辑对话框
+        if(res.data.meta.status===200){
+          this.queryUserList();
+        }
+        this.editFormVisible = false
+        
     }
   },
   // 使用钩子函数在页面加载之前获取数据
