@@ -9,7 +9,13 @@
     <!-- 输入框 按钮 -->
     <el-row class="my-input">
       <el-col :span="6">
-        <el-input placeholder="请输入内容" v-model="userData.query" class="input-with-select">
+        <!-- @keyup.enter.native  为组件绑定原生事件  需要用到修饰符 .native -->
+        <el-input
+          placeholder="请输入内容"
+          @keyup.enter.native="queryUserList"
+          v-model="userData.query"
+          class="input-with-select"
+        >
           <!-- 绑定搜索用户列表事件 -->
           <el-button slot="append" icon="el-icon-search" @click="queryUserList"></el-button>
         </el-input>
@@ -28,7 +34,13 @@
       <el-table-column label="用户状态" width="80">
         <!--  template自定义模板   通过scope.row.mg_state 可以绑定当前的用户状态 -->
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+          <!-- 开关按钮自带change事件 可以获取本身的状态值  为了方便直接把这一行的数据都传过去 -->
+          <el-switch
+            v-model="scope.row.mg_state"
+            active-color="#13ce66"
+            @change="stateChange(scope.row)"
+            inactive-color="#ff4949"
+          ></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="250">
@@ -87,11 +99,11 @@ export default {
       // 发送请求 获取数据  把用户对象作为参数传递过去
       // 注意 这里要把token传递给服务器 服务器才会确认token正确以后返回数据
       let res = await this.$axios.get("users", {
-        params: this.userData,
+        params: this.userData
         // 将touken放在headers中传递
-        headers: {
-          Authorization: window.sessionStorage.getItem("token")
-        }
+        // headers: {
+        //   Authorization: window.sessionStorage.getItem("token")
+        // }
       });
       console.log(res);
       if (res.data.meta.status === 200) {
@@ -102,6 +114,12 @@ export default {
       } else {
         this.$message.error("数据获取失败");
       }
+    },
+    // 修改用户状态
+    stateChange(row) {
+      // 接口调用  请求路径：users/:uId/state/:type
+      // console.log(row);
+      this.$axios.put(`users/${row.id}/state/${row.mg_state}`);
     }
   },
   // 使用钩子函数在页面加载之前获取数据
