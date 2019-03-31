@@ -10,7 +10,8 @@
     <el-row class="my-input">
       <el-col :span="6">
         <el-input placeholder="请输入内容" v-model="userData.query" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
+          <!-- 绑定搜索用户列表事件 -->
+          <el-button slot="append" icon="el-icon-search" @click="queryUserList"></el-button>
         </el-input>
       </el-col>
       <el-col :span="4">
@@ -80,6 +81,7 @@ export default {
     },
     // 添加用户的方法
     addUser() {},
+
     // 查询用户列表的方法
     async queryUserList() {
       // 发送请求 获取数据  把用户对象作为参数传递过去
