@@ -9,15 +9,14 @@ import login from "./components/login.vue";
 import index from "./components/index.vue";
 
 // 导入首页的嵌套路由
-import users from './components/users.vue';   //用户列表组件
-import roles from './components/roles.vue';   //角色列表组件
-import rights from './components/rights.vue'; //权限列表组件
-import goods from './components/goods.vue';   //商品列表组件
-import params from './components/params.vue'; //分类参数组件
-import categories from './components/categories.vue'; //商品分类组件
-import orders from './components/orders.vue'; //订单列表组件
-import reports from './components/reports.vue'; //数据报表组件
-
+import users from "./components/users.vue"; //用户列表组件
+import roles from "./components/roles.vue"; //角色列表组件
+import rights from "./components/rights.vue"; //权限列表组件
+import goods from "./components/goods.vue"; //商品列表组件
+import params from "./components/params.vue"; //分类参数组件
+import categories from "./components/categories.vue"; //商品分类组件
+import orders from "./components/orders.vue"; //订单列表组件
+import reports from "./components/reports.vue"; //数据报表组件
 
 // 路由规则
 let routes = [
@@ -30,33 +29,43 @@ let routes = [
   {
     path: "/",
     component: index,
-    children:[
+    children: [
+      // 路由重定向  访问首页的时候 默认显示用户列表
       {
-        path:'users',
-        component:users
+        path: "",
+        redirect: "users"
       },
       {
-        path:'roles',
-        component:roles
+        path: "users",
+        component: users
       },
       {
-        path:'rights',
-        component:rights
-      }, {
-        path:'goods',
-        component:goods
-      }, {
-        path:'params',
-        component:params
-      },{
-        path:'categories',
-        component:categories
-      },{
-        path:'orders',
-        component:orders
-      },{
-        path:'reports',
-        component:reports
+        path: "roles",
+        component: roles
+      },
+      {
+        path: "rights",
+        component: rights
+      },
+      {
+        path: "goods",
+        component: goods
+      },
+      {
+        path: "params",
+        component: params
+      },
+      {
+        path: "categories",
+        component: categories
+      },
+      {
+        path: "orders",
+        component: orders
+      },
+      {
+        path: "reports",
+        component: reports
       }
     ]
   },
