@@ -60,7 +60,13 @@
             size="mini"
             plain
           ></el-button>
-          <el-button type="warning" icon="el-icon-check" size="mini" plain></el-button>
+          <el-button
+            type="warning"
+            @click="showRole(scope.row)"
+            icon="el-icon-check"
+            size="mini"
+            plain
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,6 +77,8 @@
       :page-size="userData.pagesize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
+      @size-change="sizeChange"
+      @current-change="currentChange"
     ></el-pagination>
 
     <!-- 新增用户表单  要进行表单验证 -->
@@ -91,7 +99,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitAdd('addForm')">确 定</el-button>
+        <el-button type="primary" @click="submitAdd('addForm')" >确 定</el-button>
       </div>
     </el-dialog>
 
@@ -111,6 +119,29 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="editFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="submitEdit('editForm')">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 分配角色弹框 -->
+    <el-dialog title="分配角色" :visible.sync="roleFormVisible">
+      <el-form ref="roleForm">
+        <el-form-item label="当前用户" label-width="100px">{{editUser.username}}</el-form-item>
+        <el-form-item label="请选择角色">
+          <!-- 下拉框的v-model  绑定的是编辑用户的角色名 默认显示哪一个下拉框 -->
+          <!--   v-model="editUser.role_name"  设置默认被选中 -->
+          <el-select v-model="editUser.role_name" placeholder="请选择">
+            <el-option
+              v-for="item in roleList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="roleFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitRole('roleForm')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -167,7 +198,13 @@ export default {
             trigger: "blur"
           }
         ]
-      }
+      },
+      // 是否显示角色弹框
+      roleFormVisible: false,
+      // 用户角色列表
+      roleList: [],
+      // 当前正在编辑的用户
+      editUser: {}
     };
   },
   methods: {
@@ -185,7 +222,6 @@ export default {
         this.editFormVisible = true;
       }
     },
-
     // 查询用户列表的方法
     async queryUserList() {
       // 发送请求 获取数据  把用户对象作为参数传递过去
@@ -197,7 +233,7 @@ export default {
         //   Authorization: window.sessionStorage.getItem("token")
         // }
       });
-      console.log(res);
+      // console.log(res);
       if (res.data.meta.status === 200) {
         // 成功请求数据
         // 将获取的数据保存到用户数组  然后进行渲染
@@ -220,7 +256,7 @@ export default {
           // 进入这里表示能够新增
           // 调用接口  然后新增成功关闭新增表单的对话框
           let res = await this.$axios.post("users", this.addForm);
-          console.log(res);
+          // console.log(res);
           if (res.data.meta.status === 201) {
             // 新增成功  调用查询方法
             this.queryUserList();
@@ -270,6 +306,43 @@ export default {
             message: "你真好!!!!"
           });
         });
+    },
+    // 显示角色弹框
+    async showRole(row) {
+      // 显示弹框
+      this.roleFormVisible = true;
+      // 保存当前用户名
+      // console.log(row);
+      this.editUser = row;
+      // 获取角色列表 保存到弹出框中
+      let res = await this.$axios.get("roles");
+      this.roleList = res.data.data;
+      // console.log(res);
+    },
+    // 分配角色方法
+    async submitRole(formName) {
+      // 获取用户id
+      // 获取角色id   角色id就是role_name 每次选择的时候会变动
+      let res = await this.$axios.put(`users/${this.editUser.id}/role`, {
+        rid: this.editUser.role_name
+      });
+      // 判断 如果分配成功 就关闭对话框并且调用查询方法
+      if (res.data.meta.status === 200) {
+        this.roleFormVisible = false;
+        this.queryUserList();
+      }
+    },
+    // 页码改变
+    currentChange(current) {
+      // console.log(current);
+      this.userData.pagenum = current;
+      this.queryUserList();
+    },
+    // 页容量改变
+    sizeChange(size) {
+      // console.log(size);
+      this.userData.pagesize = size;
+      this.queryUserList();
     }
   },
   // 使用钩子函数在页面加载之前获取数据
