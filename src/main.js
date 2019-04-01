@@ -9,6 +9,10 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
 
+// 全局注册面包屑组件  在饿了么ui的下面导  不然会被饿了么的样式覆盖了
+import myBread from './components/myBread.vue'
+Vue.component('my-bread',myBread)
+
 // 导入公共样式
 import "./assets/base.css";
 

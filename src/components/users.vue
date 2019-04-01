@@ -1,11 +1,8 @@
 <template>
   <div class="user-container">
-    <!-- 面包屑 -->
-    <el-breadcrumb class="my-bread" separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    <!-- 面包屑 使用面包屑组件-->
+    <my-bread sectitle="用户管理" threetitle="用户列表"></my-bread>
+
     <!-- 输入框 按钮 -->
     <el-row class="my-input">
       <el-col :span="6">
@@ -99,7 +96,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitAdd('addForm')" >确 定</el-button>
+        <el-button type="primary" @click="submitAdd('addForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -356,20 +353,10 @@ export default {
 <style lang='scss'>
 .user-container {
   height: 100%;
-  .my-bread {
-    height: 40px;
-    line-height: 40px;
-    background-color: #d3dce6;
-    padding-left: 10px;
-  }
   .my-input {
     .my-btn {
       margin-left: 10px;
     }
-  }
-  .my-table {
-  }
-  .my-pagination {
   }
 }
 </style>

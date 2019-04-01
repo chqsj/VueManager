@@ -1,19 +1,19 @@
 <template>
-  <div class="rights-container">
-    <!-- 面包屑 -->
-    <el-breadcrumb class="my-bread" separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-      <el-breadcrumb-item>角色列表</el-breadcrumb-item>
-    </el-breadcrumb>
+  <div class="user-container">
+    <!-- 面包屑 使用面包屑组件-->
+    <my-bread sectitle="权限管理" threetitle="角色列表"></my-bread>
 
-    <!-- 表格 -->
-    <el-table class="my-table" :data="tableData" border style="width: 100%">
-      <el-table-column prop="id" label="#" width="30"></el-table-column>
-      <el-table-column prop="rightsname" label="权限名称" width="200"></el-table-column>
-      <el-table-column prop="rightspath" label="路径" width="200"></el-table-column>
-      <el-table-column prop="grad" label="层级" width="200"></el-table-column>
+    <!-- 表格  使用自定义列模板 -->
+    <el-table class="my-table" :data="rightsList" border style="width: 100%">
+      <!-- type="index"  设置这个可以让每一行的按顺序排列 -->
+      <el-table-column label="#" width="50" type="index"></el-table-column>
+      <el-table-column label="权限名称" width="200"></el-table-column>
+      <el-table-column label="路径" width="200"></el-table-column>
+      <el-table-column label="层级" width="200"></el-table-column>
+
+     
     </el-table>
+    
   </div>
 </template>
 
@@ -22,60 +22,18 @@ export default {
   name: "rights",
   data() {
     return {
-      tableData: [
-        {
-          id: 1,
-          rightsname: "商品管理",
-          rightspath: "goods",
-          grad: "一级"
-        },
-        {
-          id: 2,
-          rightsname: "订单管理",
-          rightspath: "orders",
-          grad: "一级"
-        },
-        {
-          id: 3,
-          rightsname: "权限管理",
-          rightspath: "rights",
-          grad: "一级"
-        },
-        {
-          id: 4,
-          rightsname: "商品列表",
-          rightspath: "goods",
-          grad: "二级"
-        },
-        {
-          id: 5,
-          rightsname: "添加商品",
-          rightspath: "goods",
-          grad: "三级"
-        }
-      ]
+      rightsList: [{}, {}]
     };
-  }
+  },
+
+  // 使用钩子函数在页面加载之前获取数据
+  created() {}
 };
 </script>
 
 <style lang='scss'>
-.rights-container {
+.user-container {
   height: 100%;
-  .my-bread {
-    height: 40px;
-    line-height: 40px;
-    background-color: #d3dce6;
-    padding-left: 10px;
-  }
-  .my-input {
-    .my-btn {
-      margin-left: 10px;
-    }
-  }
-  .my-table {
-  }
-  .my-pagination {
-  }
+
 }
 </style>

@@ -1,31 +1,38 @@
 <template>
-  <div class="roles-container">
-    <!-- 面包屑 -->
-    <el-breadcrumb class="my-bread" separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>权限管理</el-breadcrumb-item>
-      <el-breadcrumb-item>角色列表</el-breadcrumb-item>
-    </el-breadcrumb>
-    <!-- 添加角色按钮 -->
-    <el-button>添加角色</el-button>
-    <!-- 表格 -->
-    <el-table class="my-table" :data="tableData" border style="width: 100%">
-      <el-table-column prop="id" label="#" width="30"></el-table-column>
-      <el-table-column prop="rolename" label="角色名称" width="420"></el-table-column>
-      <el-table-column prop="roledesc" label="角色描述" width="420"></el-table-column>
+  <div class="user-container">
+    <!-- 面包屑 使用面包屑组件-->
+    <my-bread sectitle="权限管理" threetitle="角色列表"></my-bread>
+
+    <!-- 输入框 按钮 -->
+    <el-row class="my-input">
+      <el-col :span="6">
+        <el-button  plain>添加角色</el-button>
+      </el-col>
+    </el-row>
+    <!-- 表格  使用自定义列模板 -->
+    <el-table class="my-table" :data="rolesList" border style="width: 100%">
+      <!-- type="index"  设置这个可以让每一行的按顺序排列 -->
+      <el-table-column label="#" width="50" type="index"></el-table-column>
+      <el-table-column label="角色名称" width="420"></el-table-column>
+      <el-table-column label="角色描述" width="420"></el-table-column>
 
       <el-table-column label="操作" width="250">
-        <el-button type="primary" plain>
-          <i class="el-icon-edit"></i>
-        </el-button>
-        <el-button type="danger" plain>
-          <i class="el-icon-delete"></i>
-        </el-button>
-        <el-button type="warning" plain>
-          <i class="el-icon-check"></i>
-        </el-button>
+        <!-- scope是一个名字  可以通过scope.index获取索引 索引从0开始   通过scope.row获取这一行的数据 -->
+        <template slot-scope="scope">
+          <el-button type="primary" icon="el-icon-edit" size="mini" plain></el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" plain></el-button>
+          <el-button type="warning" icon="el-icon-check" size="mini" plain></el-button>
+        </template>
       </el-table-column>
     </el-table>
+    <!-- 分页 -->
+    <el-pagination
+      class="my-pagination"
+      :page-sizes="[5, 10, 15, 20]"
+      :page-size="10"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="0"
+    ></el-pagination>
   </div>
 </template>
 
@@ -34,55 +41,18 @@ export default {
   name: "roles",
   data() {
     return {
-      tableData: [
-        {
-          id: 1,
-          rolename: "主管",
-          roledesc: "技术负责人",
-        },
-        {
-          id: 2,
-           rolename: "主管",
-          roledesc: "技术负责人",
-        },
-        {
-          id: 3,
-           rolename: "主管",
-          roledesc: "技术负责人",
-        },
-        {
-          id: 4,
-          rolename: "主管",
-          roledesc: "技术负责人",
-        },
-         {
-          id: 5,
-          rolename: "主管",
-          roledesc: "技术负责人",
-        }
-      ]
+      rolesList: [{}, {}]
     };
-  }
+  },
+
+  // 使用钩子函数在页面加载之前获取数据
+  created() {}
 };
 </script>
 
 <style lang='scss'>
-.roles-container {
+.user-container {
   height: 100%;
-  .my-bread {
-    height: 40px;
-    line-height: 40px;
-    background-color: #d3dce6;
-    padding-left: 10px;
-  }
-  .my-input {
-    .my-btn {
-      margin-left: 10px;
-    }
-  }
-  .my-table {
-  }
-  .my-pagination {
-  }
+
 }
 </style>
