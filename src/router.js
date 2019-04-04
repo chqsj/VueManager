@@ -80,5 +80,29 @@ let router = new VueRouter({
   routes
 });
 
+// 注册全局前置守卫(导航守卫)
+/* 
+  to 去的 路由信息
+  from 来的路由信息
+  next 继续向后执行  跟express的中间件类似
+*/
+router.beforeEach((to, from, next) => {
+  if(to.path==='/login'){
+      // 如果请求的路径是登录页 就放行去登录
+
+    next()
+  }else{
+      // 如果请求的路径不是登录页 就判断是否有token  没有就打回登录页
+    if(window.sessionStorage.getItem('token')){
+      next()
+    }else{
+      // 提示
+      Vue.prototype.$message.error('哥们,发现你没有登录,请去登录')
+      next('/login')
+    }
+  } 
+})
+
+
 // 暴露路由
 export default router;
